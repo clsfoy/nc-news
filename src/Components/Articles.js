@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { getArticles } from "../api";
+import ArticleCard from "./ArticleCard";
+
 class Articles extends Component {
   state = { articles: [] };
 
   componentDidMount() {
     const topic = this.props.topic;
+
     getArticles(topic).then((articles) => {
       this.setState(articles);
     });
@@ -24,8 +27,15 @@ class Articles extends Component {
   render() {
     return (
       <div>
+        <h3>{this.props.topic || "All Articles"}</h3>
+        <p>Showing {this.state.articles.length} articles</p>
         {this.state.articles.map((article) => {
-          return <h2>{article.title}</h2>;
+          return (
+            <ArticleCard
+              key={article.article_id}
+              article={article}
+            ></ArticleCard>
+          );
         })}
       </div>
     );

@@ -16,3 +16,17 @@ export const getArticles = (topic) => {
       return data;
     });
 };
+
+export const getArticleById = (id) => {
+  return ncNewsApi.get(`/articles/${id}`).then(({ data }) => {
+    return data;
+  });
+};
+
+export const getCommentsByArticleId = (id) => {
+  return ncNewsApi
+    .get(`/articles/${id}/comments`, { params: { limit: 100 } })
+    .then(({ data }) => {
+      return data;
+    });
+};
