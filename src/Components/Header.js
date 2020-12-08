@@ -5,7 +5,9 @@ const Header = () => {
   return (
     <div>
       <h1>
-        <Link to="/articles">NC NEWS</Link>
+        <Link style={{ textDecoration: "none" }} to="/articles">
+          NC NEWS
+        </Link>
       </h1>
     </div>
   );

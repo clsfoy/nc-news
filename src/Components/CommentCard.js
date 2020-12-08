@@ -1,12 +1,11 @@
-import { Link } from "@reach/router";
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Moment from "react-moment";
-import "moment-timezone";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Moment from "react-moment";
+import "moment-timezone";
 
 const useStyles = makeStyles({
   root: {
@@ -28,14 +27,12 @@ const useStyles = makeStyles({
     overflow: "hidden",
   },
 });
-
-const ArticleCard = (props) => {
+const CommentCard = (props) => {
   const classes = useStyles();
-
-  const article = props.article;
-  const dateToFormat = article.created_at;
+  const comment = props.comment;
+  const dateToFormat = comment.created_at;
   return (
-    <div className="article-card">
+    <div className="comment-card" key={comment.comment_id}>
       <Card className={classes.root} variant="outlined">
         <CardContent>
           <Typography
@@ -45,11 +42,11 @@ const ArticleCard = (props) => {
           >
             <div className="card-header">
               <p>
-                Written by {article.author}{" "}
+                Written by {comment.author}{" "}
                 <Moment fromNow>{dateToFormat}</Moment>
               </p>
               <div className="vote">
-                <p>{article.votes}</p>
+                <p>{comment.votes}</p>
                 <div className="icons">
                   <FontAwesomeIcon icon="thumbs-up" />
                   <FontAwesomeIcon icon="thumbs-down" />
@@ -57,25 +54,11 @@ const ArticleCard = (props) => {
               </div>
             </div>
           </Typography>
-          <Typography variant="h6" component="h4">
-            <Link to={`/articles/id/${article.article_id}`}>
-              {article.title}
-            </Link>
-          </Typography>
-
-          <Typography className={classes.body} color="textPrimary">
-            <p>{article.body}</p>
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            <p>
-              {article.comment_count} <FontAwesomeIcon icon="comment" />{" "}
-            </p>
-          </Typography>
-          <Typography variant="body2" component="p"></Typography>
+          <p>{comment.body}</p>
         </CardContent>
       </Card>
     </div>
   );
 };
 
-export default ArticleCard;
+export default CommentCard;

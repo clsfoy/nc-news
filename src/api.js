@@ -13,13 +13,13 @@ export const getArticles = (topic) => {
   return ncNewsApi
     .get("/articles", { params: { topic: topic, limit: 100 } })
     .then(({ data }) => {
-      return data;
+      return data.articles;
     });
 };
 
 export const getArticleById = (id) => {
   return ncNewsApi.get(`/articles/${id}`).then(({ data }) => {
-    return data;
+    return data.article;
   });
 };
 
@@ -28,5 +28,16 @@ export const getCommentsByArticleId = (id) => {
     .get(`/articles/${id}/comments`, { params: { limit: 100 } })
     .then(({ data }) => {
       return data;
+    });
+};
+
+export const postComment = (comment, id) => {
+  console.log(id);
+  console.log(comment);
+  return ncNewsApi
+    .post(`/articles/${id}/comments`, comment)
+    .then(({ data }) => {
+      return data.newComment;
+      console.log(data.newComment);
     });
 };

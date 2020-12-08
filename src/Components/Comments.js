@@ -1,33 +1,38 @@
 import React, { Component } from "react";
 import { getCommentsByArticleId } from "../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CommentCard from "./CommentCard";
+import AddComment from "./AddComment";
+
 class Comments extends Component {
   state = { comments: [] };
 
   componentDidMount() {
+    console.log(this.props);
     getCommentsByArticleId(this.props.id).then((comments) => {
       this.setState(comments);
     });
   }
 
+  commentAdder = (newComment) => {
+    this.setState((currState) => {
+      console.log(newComment, "final new comment");
+      return { comments: [...currState.comments, newComment] };
+    });
+  };
+
   render() {
     return (
       <div>
-        <h1>Comments ({this.state.comments.length})</h1>
+        <h3>
+          <FontAwesomeIcon icon="comment" /> ({this.state.comments.length})
+        </h3>
+        <AddComment
+          articleId={this.props.id}
+          commentAdder={this.commentAdder}
+        ></AddComment>
         {this.state.comments.map((comment) => {
-          return (
-            <div className="comment-card" key={comment.comment_id}>
-              <div className="comment-header">
-                <p>Written by {comment.author}</p>{" "}
-                <div className="vote">
-                  <p>{comment.votes}</p>
-                  <FontAwesomeIcon icon="arrow-up" />
-                  <FontAwesomeIcon icon="arrow-down" />
-                </div>
-              </div>
-              <p>{comment.body}</p>
-            </div>
-          );
+          return <CommentCard comment={comment}></CommentCard>;
         })}
       </div>
     );
