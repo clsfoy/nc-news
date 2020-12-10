@@ -23,7 +23,7 @@ class Nav extends Component {
           <Dropdown.Menu>
             {this.state.topics.map((topic) => {
               return (
-                <div>
+                <div key={topic.slug}>
                   <Dropdown.Item>
                     <Link
                       style={{ textDecoration: "none" }}
@@ -35,8 +35,22 @@ class Nav extends Component {
                 </div>
               );
             })}
+            <Dropdown.Item>
+              <Link
+                style={{ textDecoration: "none" }}
+                params={this.state}
+                to={`/add-topic`}
+              >
+                <Button style={{ background: "grey", color: "white" }}>
+                  Add New Topic
+                </Button>
+              </Link>
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+        <Link style={{ textDecoration: "none" }} to="/register">
+          <Button style={{ backgroundColor: "#eb5c44" }}>Register</Button>
+        </Link>
       </nav>
     );
   }

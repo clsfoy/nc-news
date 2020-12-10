@@ -1,39 +1,104 @@
 import React, { Component } from "react";
 import { getCommentsByArticleId } from "../api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CommentCard from "./CommentCard";
 import AddComment from "./AddComment";
+import Button from "@material-ui/core/Button";
+import Dropdown from "react-bootstrap/Dropdown";
 
 class Comments extends Component {
-  state = { comments: [] };
+  state = {
+    comments: [],
+    sort_by: "created_at",
+    sort_order: "",
+    hasNewComment: false,
+  };
 
   componentDidMount() {
-    console.log(this.props);
-    getCommentsByArticleId(this.props.id).then((comments) => {
+    getCommentsByArticleId(
+      this.props.id,
+      this.state.sort_by,
+      this.state.sort_order
+    ).then((comments) => {
       this.setState(comments);
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const hasNewComment = prevState.hasNewComment !== this.state.hasNewComment;
+    const diffSort = prevState.sort_by !== this.state.sort_by;
+    const diffOrder = prevState.sort_order !== this.state.sort_order;
+    if (hasNewComment) {
+      getCommentsByArticleId(
+        this.props.id,
+        this.state.sort_by,
+        this.state.sort_order
+      ).then((comments) => {
+        this.setState(comments);
+      });
+    }
+
+    if (diffSort || diffOrder) {
+      getCommentsByArticleId(
+        this.props.id,
+        this.state.sort_by,
+        this.state.sort_order
+      ).then((comments) => {
+        this.setState(comments);
+      });
+    }
+  }
+
   commentAdder = (newComment) => {
     this.setState((currState) => {
-      console.log(newComment, "final new comment");
-      return { comments: [...currState.comments, newComment] };
+      return {
+        comments: [...currState.comments, newComment],
+        hasNewComment: true,
+      };
     });
   };
 
+  sortComments = (sort) => {
+    this.setState((currState) => {
+      return {
+        comments: [...currState.comments],
+        sort_by: sort,
+      };
+    });
+  };
+
+  handleChange = (event) => {
+    const order = event.target.value;
+
+    this.setState({ sort_order: order });
+  };
+
   render() {
+    const { loggedInUser } = this.props;
     return (
-      <div>
-        <h3>
-          <FontAwesomeIcon icon="comment" /> ({this.state.comments.length})
-        </h3>
+      <div className="comments-container">
         <AddComment
+          loggedInUser={loggedInUser}
           articleId={this.props.id}
           commentAdder={this.commentAdder}
         ></AddComment>
-        {this.state.comments.map((comment) => {
-          return <CommentCard comment={comment}></CommentCard>;
-        })}
+
+        {this.state.comments.length === 0 ? (
+          <h4 style={{ color: "white" }}>
+            You're the first here...add a comment to get the discussion started!
+          </h4>
+        ) : (
+          this.state.comments.map((comment) => {
+            return (
+              <CommentCard
+                voteUpdater={this.voteUpdater}
+                loggedInUser={loggedInUser}
+                key={comment.comment_id}
+                article_id={this.props.id}
+                comment={comment}
+              ></CommentCard>
+            );
+          })
+        )}
       </div>
     );
   }

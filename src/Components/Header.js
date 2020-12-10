@@ -4,11 +4,19 @@ import React from "react";
 const Header = () => {
   return (
     <div>
-      <h1>
-        <Link style={{ textDecoration: "none" }} to="/articles">
+      <h2>
+        <Link
+          style={{
+            textDecoration: "none",
+            color: "black",
+            textShadow: "-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black",
+          }}
+          to="/"
+        >
           NC NEWS
         </Link>
-      </h1>
+      </h2>
+      <h5>the only original source of truth...</h5>
     </div>
   );
 };
