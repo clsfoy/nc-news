@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import { deleteArticle } from "../api";
 import { navigate } from "@reach/router";
 import { Link } from "@material-ui/core";
+import DeleteMessage from "./DeleteMessage";
 
 const useStyles = makeStyles({
   root: {
@@ -45,8 +46,11 @@ const FullArticleCard = (props) => {
   const handleClick = (event) => {
     console.log("clicked");
     const article = props.article;
-    deleteArticle(article.article_id);
-    navigate(`/`);
+
+    if (window.confirm("Are you sure you wish to delete this article?"))
+      deleteArticle(article.article_id).then((res) => {
+        navigate("/");
+      });
   };
 
   return (

@@ -48,9 +48,9 @@ class Nav extends Component {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <Link style={{ textDecoration: "none" }} to="/register">
+        {/* <Link style={{ textDecoration: "none" }} to="/register">
           <Button style={{ backgroundColor: "#eb5c44" }}>Register</Button>
-        </Link>
+        </Link> */}
       </nav>
     );
   }

@@ -47,6 +47,7 @@
 
 .articles-container {
   margin: 1%;
+  height: 100vh;
 }
 
 .card-header {
@@ -241,6 +242,11 @@ input[type="text"] {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .footer {

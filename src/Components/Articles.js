@@ -155,15 +155,20 @@ class Articles extends Component {
               </Link>
             </div>
           </div>
-
-          {this.state.articles.map((article) => {
-            return (
-              <ArticleCard
-                key={article.article_id}
-                article={article}
-              ></ArticleCard>
-            );
-          })}
+          {this.state.articles.length === 0 ? (
+            <h4 style={{ color: "white" }}>
+              Nothing to see! Add a new post above to get started...
+            </h4>
+          ) : (
+            this.state.articles.map((article) => {
+              return (
+                <ArticleCard
+                  key={article.article_id}
+                  article={article}
+                ></ArticleCard>
+              );
+            })
+          )}
         </div>
       );
     }

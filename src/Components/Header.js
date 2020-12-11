@@ -1,9 +1,9 @@
 import { Link } from "@reach/router";
 import React from "react";
-
+import logo from "./logo.png";
 const Header = () => {
   return (
-    <div>
+    <div className="header">
       <h2>
         <Link
           style={{
@@ -15,6 +15,7 @@ const Header = () => {
         >
           NC NEWS
         </Link>
+        <img style={{ width: "50px" }} className="logo" src={logo} alt="Logo" />
       </h2>
       <h5>the only original source of truth...</h5>
     </div>
