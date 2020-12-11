@@ -43,11 +43,13 @@
   flex-direction: column;
   align-items: center;
   padding: 1%;
+  position: relative;
+  z-index: 1;
 }
 
 .articles-container {
   margin: 1%;
-  height: 100vh;
+  overflow: scroll;
 }
 
 .card-header {
@@ -104,6 +106,10 @@
   justify-content: center;
 }
 
+.nav-container {
+  border: solid black;
+}
+
 .login-form {
   text-align: center;
   width: 70%;
@@ -156,7 +162,6 @@
 
 .article-body {
   height: 200px;
-  /* width: 145px; */
   padding-bottom: 80px;
   padding-right: 10%;
 }
@@ -222,6 +227,8 @@
   background: #f7f9f97e;
   padding: 1%;
   border-radius: 5px;
+  /* position: fixed; */
+  z-index: 2;
 }
 
 .topic-text {
@@ -257,6 +264,11 @@ input[type="text"] {
 .loading {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+}
+
+.new-topic {
+  text-align: center;
   height: 100vh;
 }
 

@@ -8,6 +8,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Voter from "./Voter";
+import Button from "@material-ui/core/Button";
+import { deleteArticle } from "../api";
 
 const useStyles = makeStyles({
   root: {
@@ -36,10 +38,20 @@ const useStyles = makeStyles({
 
 const ArticleCard = (props) => {
   const classes = useStyles();
-
   const article = props.article;
-
   const dateToFormat = article.created_at;
+  const { loggedInUser } = props;
+
+  const handleClick = (event) => {
+    console.log("clicked");
+    console.log(props);
+
+    if (window.confirm("Are you sure you wish to delete this article?"))
+      deleteArticle(article.article_id).then((res) => {
+        props.articleDeleter();
+        // navigate("/");
+      });
+  };
   return (
     <div className="article-card">
       <Card className={classes.root} variant="outlined">
@@ -55,6 +67,22 @@ const ArticleCard = (props) => {
                 <Moment fromNow>{dateToFormat}</Moment>
               </p>
               <Link to={`/articles/${article.topic}`}>{article.topic}</Link>
+              {loggedInUser === article.author ? (
+                <div>
+                  <Button
+                    onClick={handleClick}
+                    style={{ background: "#eb5c44" }}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button onClick={handleClick} disabled={true}>
+                    Delete
+                  </Button>
+                </div>
+              )}
             </div>
           </Typography>
           <Typography color="textPrimary" variant="h6" component="h4">

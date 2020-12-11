@@ -5,6 +5,7 @@ import Loading from "./Loading";
 import Button from "@material-ui/core/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link } from "@reach/router";
+import ScrollUpButton from "react-scroll-up-button";
 
 class Articles extends Component {
   state = {
@@ -60,6 +61,17 @@ class Articles extends Component {
         sort_by: sort,
       };
     });
+  };
+
+  articleDeleter = () => {
+    console.log("deleting...");
+    const topic = this.props.topic;
+
+    getArticles(topic, this.state.sort_by, this.state.sort_order).then(
+      (articles) => {
+        this.setState({ articles, isLoading: false });
+      }
+    );
   };
 
   handleChange = (event) => {
@@ -163,12 +175,15 @@ class Articles extends Component {
             this.state.articles.map((article) => {
               return (
                 <ArticleCard
+                  articleDeleter={this.articleDeleter}
+                  loggedInUser={this.props.loggedInUser}
                   key={article.article_id}
                   article={article}
                 ></ArticleCard>
               );
             })
           )}
+          <ScrollUpButton />
         </div>
       );
     }

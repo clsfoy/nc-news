@@ -14,16 +14,16 @@ class AddTopic extends Component {
     event.preventDefault();
     postTopic(this.state).then((newTopic) => {
       getTopics().then((topics) => {
-        navigate(`/articles/${newTopic.slug}`);
+        this.props.topicAdder(newTopic);
       });
     });
   };
 
   render() {
-    console.log(this.params);
+    const { loggedIn } = this.props;
     return (
       <div>
-        <form onSubmit={this.handleSubmit} className="new-article">
+        <form onSubmit={this.handleSubmit} className="new-topic">
           <input
             onChange={this.handleChange}
             id="slug"
@@ -38,9 +38,24 @@ class AddTopic extends Component {
             placeholder="Whats it all about?"
             type="text"
           ></input>
-          <Button style={{ background: "white" }} type="submit">
-            Submit
-          </Button>
+          {loggedIn ? (
+            <div>
+              <Button style={{ background: "white" }} type="submit">
+                Submit
+              </Button>
+              <h4>Head to your new topic page through the dropdown above!</h4>{" "}
+            </div>
+          ) : (
+            <div>
+              <Button
+                disabled={true}
+                style={{ background: "white" }}
+                type="submit"
+              >
+                Looks like you need to log in
+              </Button>
+            </div>
+          )}
         </form>
       </div>
     );

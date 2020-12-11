@@ -17,7 +17,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "./Components/Footer";
 import Login from "./Components/Login";
-import AddTopic from "./Components/AddTopic";
+
 import AddArticle from "./Components/AddArticle";
 import Register from "./Components/Register";
 import ErrorMessage from "./Components/ErrorMessage";
@@ -47,25 +47,24 @@ class App extends Component {
               logout={this.logout}
               login={this.login}
             ></Login>
-            <Nav></Nav>
+            <Nav loggedIn={this.state.loggedIn}></Nav>
           </banner>
           <Router primary={false}>
-            <Articles path="/"></Articles>
+            <Articles loggedInUser={loggedInUser} path="/"></Articles>
             <Articles path="/articles/:topic"></Articles>
             <SingleArticle
               loggedIn={this.state.loggedIn}
               loggedInUser={loggedInUser}
               path="/articles/id/:id"
             ></SingleArticle>
-            <AddTopic path="/add-topic"></AddTopic>
             <AddArticle path="add-article"></AddArticle>
             <Register path="/register"></Register>
-            <ErrorMessage
+            {/* <ErrorMessage
               errorMessage={
                 "Sorry, that page doesn't exist - have a look through the topics above, or head home through the NC NEWS link."
               }
               default
-            />
+            /> */}
           </Router>
           <Footer></Footer>
         </div>

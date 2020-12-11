@@ -3,6 +3,7 @@ import { getArticleById } from "../api";
 import ErrorMessage from "./ErrorMessage";
 import FullArticleCard from "./FullArticleCard";
 import Loading from "./Loading";
+import ScrollUpButton from "react-scroll-up-button";
 class SingleArticle extends Component {
   state = {
     article: {},
@@ -42,6 +43,7 @@ class SingleArticle extends Component {
             loggedInUser={loggedInUser}
             article={article[0]}
           ></FullArticleCard>
+          <ScrollUpButton />;
         </div>
       );
     }

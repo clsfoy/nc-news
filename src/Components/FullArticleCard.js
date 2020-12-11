@@ -78,22 +78,6 @@ const FullArticleCard = (props) => {
                   {article.comment_count} <FontAwesomeIcon icon="comment" />
                 </h4>
               </Typography>
-              {loggedInUser === article.author ? (
-                <div>
-                  <Button
-                    onClick={handleClick}
-                    style={{ background: "#eb5c44" }}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              ) : (
-                <div>
-                  <Button onClick={handleClick} disabled={true}>
-                    Delete
-                  </Button>
-                </div>
-              )}
 
               <Voter
                 articleId={article.article_id}
