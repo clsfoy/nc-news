@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 const FullArticleCard = (props) => {
   const classes = useStyles();
   const article = props.article;
-  const { loggedInUser } = props;
+  const { loggedInUser, loggedIn } = props;
 
   const dateToFormat = article.created_at;
 
@@ -96,7 +96,11 @@ const FullArticleCard = (props) => {
           <Typography variant="body2" component="p"></Typography>
         </CardContent>
       </Card>
-      <Comments loggedInUser={loggedInUser} id={article.article_id}></Comments>
+      <Comments
+        loggedIn={loggedIn}
+        loggedInUser={loggedInUser}
+        id={article.article_id}
+      ></Comments>
     </div>
   );
 };

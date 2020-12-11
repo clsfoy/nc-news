@@ -12,7 +12,7 @@ class AddComment extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { loggedInUser } = this.props;
+    const { loggedInUser, loggedIn } = this.props;
     const article_id = this.props.articleId;
     postComment(this.state, article_id).then((newComment) => {
       this.props.commentAdder(newComment);
@@ -26,6 +26,7 @@ class AddComment extends Component {
   }
 
   render() {
+    const { loggedIn, loggedInUser } = this.props;
     return (
       <div className="comment-form">
         <h5>Got something to say...?</h5>
@@ -49,13 +50,21 @@ class AddComment extends Component {
               type="text"
               onChange={this.handleChange}
               id="username"
-              value={this.state.username}
+              value={loggedInUser}
               placeholder="Username"
             ></input>
           </label>
-          <label>
-            <Button type="submit">Submit</Button>
-          </label>
+          {loggedIn ? (
+            <label>
+              <Button type="submit">Submit</Button>
+            </label>
+          ) : (
+            <label>
+              <Button disabled={true} type="submit">
+                Looks like you need to log in!
+              </Button>
+            </label>
+          )}
         </form>
       </div>
     );

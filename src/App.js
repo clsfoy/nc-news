@@ -35,7 +35,7 @@ class App extends Component {
   };
 
   render() {
-    const { loggedInUser } = this.state;
+    const { loggedInUser, loggedIn } = this.state;
 
     return (
       <div className="main-border">
@@ -53,7 +53,7 @@ class App extends Component {
             <Articles loggedInUser={loggedInUser} path="/"></Articles>
             <Articles path="/articles/:topic"></Articles>
             <SingleArticle
-              loggedIn={this.state.loggedIn}
+              loggedIn={loggedIn}
               loggedInUser={loggedInUser}
               path="/articles/id/:id"
             ></SingleArticle>

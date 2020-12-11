@@ -84,10 +84,11 @@ class Comments extends Component {
   };
 
   render() {
-    const { loggedInUser } = this.props;
+    const { loggedInUser, loggedIn } = this.props;
     return (
       <div className="comments-container">
         <AddComment
+          loggedIn={loggedIn}
           loggedInUser={loggedInUser}
           articleId={this.props.id}
           commentAdder={this.commentAdder}
