@@ -20,6 +20,7 @@ import Login from "./Components/Login";
 import AddTopic from "./Components/AddTopic";
 import AddArticle from "./Components/AddArticle";
 import Register from "./Components/Register";
+import ErrorMessage from "./Components/ErrorMessage";
 
 library.add(fab, faThumbsUp, faThumbsDown, faComment, faTrashAlt, faNewspaper);
 
@@ -39,8 +40,8 @@ class App extends Component {
     return (
       <div className="main-border">
         <div className="main-content">
+          <Header></Header>
           <banner className="banner">
-            <Header></Header>
             <Login
               loggedIn={this.state.loggedIn}
               logout={this.logout}
@@ -59,6 +60,12 @@ class App extends Component {
             <AddTopic path="/add-topic"></AddTopic>
             <AddArticle path="add-article"></AddArticle>
             <Register path="/register"></Register>
+            <ErrorMessage
+              errorMessage={
+                "Sorry, that page doesn't exist - have a look through the topics above, or head home through the NC NEWS link."
+              }
+              default
+            />
           </Router>
           <Footer></Footer>
         </div>

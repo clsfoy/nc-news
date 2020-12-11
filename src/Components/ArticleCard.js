@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
   body: {
     maxHeight: 50,
-    overflow: "hidden",
+    // overflow: "hidden",
   },
   articleTitle: {
     color: "black",
@@ -63,9 +63,9 @@ const ArticleCard = (props) => {
             </Link>
           </Typography>
 
-          <Typography className={classes.body} color="textPrimary">
+          {/* <Typography className={classes.body} color="textPrimary">
             <p>{article.body}</p>
-          </Typography>
+          </Typography> */}
           <Typography className={classes.pos} color="textSecondary">
             <h4>
               <Link

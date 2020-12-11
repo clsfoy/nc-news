@@ -8,15 +8,15 @@ class CommentVoter extends Component {
     const { comment_id } = this.props;
 
     if (val === "up") {
-      upVoteComment(comment_id, val).then(
-        this.setState({ voteChange: 1, hasVoted: true })
-      );
+      upVoteComment(comment_id, val).then((newComment) => {
+        this.setState({ voteChange: 1, hasVoted: true });
+      });
     }
 
     if (val === "down") {
-      upVoteComment(comment_id, val).then(
-        this.setState({ voteChange: -1, hasVoted: true })
-      );
+      upVoteComment(comment_id, val).then((newComment) => {
+        this.setState({ voteChange: -1, hasVoted: true });
+      });
     }
   };
 

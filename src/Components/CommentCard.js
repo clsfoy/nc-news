@@ -32,7 +32,6 @@ const useStyles = makeStyles({
   },
 });
 const CommentCard = (props) => {
-  console.log(props.comment);
   const classes = useStyles();
   const comment = props.comment;
   const commentDeleter = props.commentDeleter;
@@ -40,7 +39,6 @@ const CommentCard = (props) => {
   const { loggedInUser } = props;
 
   const handleClick = () => {
-    console.log("clicked");
     deleteComment(comment.comment_id).then((res) => {
       commentDeleter();
     });
@@ -71,7 +69,6 @@ const CommentCard = (props) => {
                 voteUpdater={props.voteUpdater}
                 comment_id={comment.comment_id}
                 votes={comment.votes}
-                updatedComment={props.comments}
               ></CommentVoter>
             </div>
           </Typography>

@@ -31,14 +31,14 @@ class Login extends Component {
           placeholder: `Logged in as ${user.username}`,
           isValid: true,
         });
-        //   } else {
-        //     if (user.username !== this.state.userName) {
-        //       this.setState({
-        //         userName: "",
-        //         placeholder: "Invalid username!",
-        //       });
-        //     }
-        //   }
+      } else {
+        if (user.username !== this.state.userName) {
+          this.setState({
+            userName: "",
+            placeholder: "User doesn't exist",
+            isValid: false,
+          });
+        }
       }
     });
   };

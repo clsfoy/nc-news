@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import { getCommentsByArticleId } from "../api";
 import CommentCard from "./CommentCard";
 import AddComment from "./AddComment";
+import Button from "@material-ui/core/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import { Link } from "@reach/router";
 
 class Comments extends Component {
   state = {
     comments: [],
     sort_by: "created_at",
-    sort_order: "",
+    sort_order: "desc",
     hasNewComment: false,
   };
 
@@ -55,11 +58,12 @@ class Comments extends Component {
     });
   };
 
-  sortComments = (sort) => {
+  sortComments = (sort, order) => {
     this.setState((currState) => {
       return {
         comments: [...currState.comments],
         sort_by: sort,
+        sort_order: order,
       };
     });
   };
@@ -76,7 +80,6 @@ class Comments extends Component {
 
   handleChange = (event) => {
     const order = event.target.value;
-
     this.setState({ sort_order: order });
   };
 
@@ -89,7 +92,65 @@ class Comments extends Component {
           articleId={this.props.id}
           commentAdder={this.commentAdder}
         ></AddComment>
-
+        <div className="sort-comments">
+          <Dropdown>
+            <Dropdown.Toggle
+              style={{
+                margin: "1%",
+                color: "white",
+                background: "#eb5c44",
+                border: "none",
+              }}
+            >
+              Sort
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item>
+                <Button
+                  style={{
+                    color: "black",
+                  }}
+                  className="sort-button"
+                  variant="outlined"
+                  onClick={() => this.sortComments("author")}
+                >
+                  Author
+                </Button>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Button
+                  style={{
+                    color: "black",
+                  }}
+                  variant="outlined"
+                  onClick={() => this.sortComments("created_at")}
+                >
+                  Date
+                </Button>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Button
+                  style={{
+                    color: "black",
+                  }}
+                  variant="outlined"
+                  onClick={() => this.sortComments("votes")}
+                >
+                  Votes
+                </Button>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <select
+            className="select"
+            onChange={this.handleChange}
+            name="order"
+            id="order"
+          >
+            <option value="asc">ASC</option>
+            <option value="desc">DESC</option>
+          </select>
+        </div>
         {this.state.comments.length === 0 ? (
           <h4 style={{ color: "white" }}>
             You're the first here...add a comment to get the discussion started!
@@ -98,8 +159,9 @@ class Comments extends Component {
           this.state.comments.map((comment) => {
             return (
               <CommentCard
-                commentDeleter={this.commentDeleter}
+                id={comment.comment_id}
                 voteUpdater={this.voteUpdater}
+                commentDeleter={this.commentDeleter}
                 loggedInUser={loggedInUser}
                 key={comment.comment_id}
                 article_id={this.props.id}
