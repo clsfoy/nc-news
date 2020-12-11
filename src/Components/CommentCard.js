@@ -7,6 +7,7 @@ import Moment from "react-moment";
 import "moment-timezone";
 import { deleteComment } from "../api";
 import CommentVoter from "./CommentVoter";
+import Alert from "react-bootstrap/Alert";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -39,9 +40,11 @@ const CommentCard = (props) => {
   const { loggedInUser } = props;
 
   const handleClick = () => {
-    deleteComment(comment.comment_id).then((res) => {
-      commentDeleter();
-    });
+    <Alert variant="danger"></Alert>;
+    if (window.confirm("Are you sure you wish to delete this item?"))
+      deleteComment(comment.comment_id).then((res) => {
+        commentDeleter();
+      });
   };
 
   return (
