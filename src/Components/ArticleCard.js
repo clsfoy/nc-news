@@ -54,6 +54,7 @@ const ArticleCard = (props) => {
                 Written by {article.author}{" "}
                 <Moment fromNow>{dateToFormat}</Moment>
               </p>
+              <Link to={`/articles/${article.topic}`}>{article.topic}</Link>
             </div>
           </Typography>
           <Typography color="textPrimary" variant="h6" component="h4">
@@ -67,7 +68,12 @@ const ArticleCard = (props) => {
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
             <h4>
-              {article.comment_count} <FontAwesomeIcon icon="comment" />
+              <Link
+                style={{ color: "black" }}
+                to={`/articles/id/${article.article_id}`}
+              >
+                {article.comment_count} <FontAwesomeIcon icon="comment" />{" "}
+              </Link>
             </h4>
             <Voter articleId={article.article_id} votes={article.votes}></Voter>
           </Typography>

@@ -86,6 +86,7 @@ class Articles extends Component {
                     margin: "1%",
                     color: "white",
                     background: "#eb5c44",
+                    border: "none",
                   }}
                 >
                   Sort

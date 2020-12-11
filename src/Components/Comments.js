@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { getCommentsByArticleId } from "../api";
 import CommentCard from "./CommentCard";
 import AddComment from "./AddComment";
-import Button from "@material-ui/core/Button";
-import Dropdown from "react-bootstrap/Dropdown";
 
 class Comments extends Component {
   state = {
@@ -66,6 +64,16 @@ class Comments extends Component {
     });
   };
 
+  commentDeleter = () => {
+    getCommentsByArticleId(
+      this.props.id,
+      this.state.sort_by,
+      this.state.sort_order
+    ).then((comments) => {
+      this.setState(comments);
+    });
+  };
+
   handleChange = (event) => {
     const order = event.target.value;
 
@@ -90,6 +98,7 @@ class Comments extends Component {
           this.state.comments.map((comment) => {
             return (
               <CommentCard
+                commentDeleter={this.commentDeleter}
                 voteUpdater={this.voteUpdater}
                 loggedInUser={loggedInUser}
                 key={comment.comment_id}

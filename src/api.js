@@ -57,7 +57,9 @@ export const postComment = (comment, id) => {
 };
 
 export const deleteComment = (comment_id) => {
-  return ncNewsApi.delete(`/comments/${comment_id}`);
+  return ncNewsApi.delete(`/comments/${comment_id}`).then((res) => {
+    console.log(res);
+  });
 };
 
 export const upVoteArticle = (articleId, val) => {

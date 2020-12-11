@@ -23,7 +23,6 @@ class CommentVoter extends Component {
   render() {
     const { votes } = this.props;
     const { voteChange } = this.state;
-    console.log(voteChange);
     return (
       <div className="voter">
         <h4>

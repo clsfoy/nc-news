@@ -11,6 +11,7 @@ import Voter from "./Voter";
 import Button from "@material-ui/core/Button";
 import { deleteArticle } from "../api";
 import { navigate } from "@reach/router";
+import { Link } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -62,6 +63,12 @@ const FullArticleCard = (props) => {
                 Written by {article.author}{" "}
                 <Moment fromNow>{dateToFormat}</Moment>
               </p>
+              <Link
+                style={{ color: "black", textTransform: "capitalize" }}
+                to={`/articles/${article.topic}`}
+              >
+                {article.topic}
+              </Link>
               <Typography className={classes.pos} color="textSecondary">
                 <h4>
                   {article.comment_count} <FontAwesomeIcon icon="comment" />

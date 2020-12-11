@@ -5,8 +5,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Moment from "react-moment";
 import "moment-timezone";
-import DeleteComment from "./DeleteComment";
+import { deleteComment } from "../api";
 import CommentVoter from "./CommentVoter";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const useStyles = makeStyles({
   root: {
@@ -30,10 +32,19 @@ const useStyles = makeStyles({
   },
 });
 const CommentCard = (props) => {
+  console.log(props.comment);
   const classes = useStyles();
   const comment = props.comment;
+  const commentDeleter = props.commentDeleter;
   const dateToFormat = comment.created_at;
   const { loggedInUser } = props;
+
+  const handleClick = () => {
+    console.log("clicked");
+    deleteComment(comment.comment_id).then((res) => {
+      commentDeleter();
+    });
+  };
 
   return (
     <div className="comment-card" key={comment.comment_id}>
@@ -50,19 +61,17 @@ const CommentCard = (props) => {
                 <Moment fromNow>{dateToFormat}</Moment>
               </p>
               {loggedInUser === comment.author ? (
-                <DeleteComment
-                  loggedInUser={loggedInUser}
-                  article_id={props.article_id}
-                  id={comment.comment_id}
-                ></DeleteComment>
+                <button class="btn" onClick={handleClick}>
+                  <FontAwesomeIcon className="delete-btn" icon="trash-alt" />
+                </button>
               ) : (
                 <p></p>
               )}
-              <h4>{comment.votes}</h4>
               <CommentVoter
                 voteUpdater={props.voteUpdater}
                 comment_id={comment.comment_id}
                 votes={comment.votes}
+                updatedComment={props.comments}
               ></CommentVoter>
             </div>
           </Typography>
