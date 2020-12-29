@@ -40,7 +40,10 @@ const ArticleCard = (props) => {
           }}
         >
           <Card.Title>
-            <Link to={`/articles/id/${article.article_id}`}>
+            <Link
+              style={{ color: "black" }}
+              to={`/articles/id/${article.article_id}`}
+            >
               <p>{article.title}</p>
             </Link>
           </Card.Title>
