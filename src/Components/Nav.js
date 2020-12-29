@@ -5,6 +5,8 @@ import Button from "@material-ui/core/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Router } from "@reach/router";
 import AddTopic from "./AddTopic";
+import Accordion from "react-bootstrap/Accordion";
+import Card from "react-bootstrap/Card";
 import { navigate } from "@reach/router";
 class Nav extends Component {
   state = { topics: [], isLoading: true };
@@ -16,9 +18,7 @@ class Nav extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevState.topics, this.state.topics);
     if (prevProps.topics !== this.state.topics) {
-      console.log("hi");
     }
   }
 
@@ -31,52 +31,61 @@ class Nav extends Component {
   render() {
     const { loggedIn } = this.props;
     return (
-      <div className="nac-container">
-        <nav className="nav-items">
-          <Dropdown>
-            <Dropdown.Toggle variant="dark" id="dropdown-basic">
-              Topics
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              {this.state.topics.map((topic) => {
-                return (
-                  <div key={topic.slug}>
-                    <Dropdown.Item>
-                      <Link
-                        style={{ textDecoration: "none" }}
-                        to={`/articles/${topic.slug}`}
-                      >
-                        <Button>{topic.slug}</Button>
-                      </Link>
-                    </Dropdown.Item>
-                  </div>
-                );
-              })}
-              <Dropdown.Item>
-                <Link
-                  style={{ textDecoration: "none" }}
-                  params={this.state}
-                  to={`/add-topic`}
-                >
-                  <Button style={{ background: "grey", color: "white" }}>
-                    Add New Topic
-                  </Button>
-                </Link>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          {/* <Link style={{ textDecoration: "none" }} to="/register">
-          <Button style={{ backgroundColor: "#eb5c44" }}>Register</Button>
-        </Link> */}
+      <div className="nav-container">
+        <div>
+          <Link
+            style={{
+              textDecoration: "underline",
+              textTransform: "capitalize",
+              color: "black ",
+              fontSize: "18px",
+            }}
+            to="/add-article"
+          >
+            <Button
+              style={{
+                color: "black",
+                background: "white",
+              }}
+              variant="outlined"
+              className="nav-btn"
+            >
+              New Post
+            </Button>
+          </Link>
+        </div>
+        <nav>
+          <div className="nav-items">
+            {this.state.topics.map((topic) => {
+              return (
+                <div className="nav-topic">
+                  {/* <Accordion.Collapse eventKey="0"> */}
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                      textTransform: "capitalize",
+                      color: "black",
+                    }}
+                    to={`/articles/${topic.slug}`}
+                  >
+                    <Button
+                      style={{
+                        border: "grey 0.1px solid",
+                        color: "black",
+                        borderRadius: "10px",
+                      }}
+                      variant="outlined"
+                      className="nav-btn"
+                    >
+                      {topic.slug}
+                    </Button>
+                  </Link>
+                  {/* </Accordion.Collapse> */}
+                </div>
+              );
+            })}
+          </div>
         </nav>
-        <Router>
-          <AddTopic
-            loggedIn={loggedIn}
-            topicAdder={this.topicAdder}
-            path="/add-topic"
-          ></AddTopic>
-        </Router>
       </div>
     );
   }

@@ -40,68 +40,72 @@ const FullArticleCard = (props) => {
   const classes = useStyles();
   const article = props.article;
   const { loggedInUser, loggedIn } = props;
-
   const dateToFormat = article.created_at;
 
-  const handleClick = (event) => {
-    console.log("clicked");
-    const article = props.article;
-
-    if (window.confirm("Are you sure you wish to delete this article?"))
-      deleteArticle(article.article_id).then((res) => {
-        navigate("/");
-      });
-  };
-
   return (
-    <div className="article-card">
-      <Card className={classes.root} variant="outlined">
-        <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
-            <div className="card-header">
-              <p>
-                Written by {article.author}{" "}
-                <Moment fromNow>{dateToFormat}</Moment>
-              </p>
-              <Link
-                style={{ color: "black", textTransform: "capitalize" }}
-                to={`/articles/${article.topic}`}
-              >
-                {article.topic}
-              </Link>
-              <Typography className={classes.pos} color="textSecondary">
-                <h4>
-                  {article.comment_count} <FontAwesomeIcon icon="comment" />
-                </h4>
-              </Typography>
+    <>
+      <div className="article-card">
+        <Card className={classes.root} variant="outlined">
+          <CardContent>
+            <Typography
+              className={classes.title}
+              color="textSecondary"
+              gutterBottom
+            >
+              <div className="article-card-header">
+                <div className="author">
+                  <p>
+                    Written by {article.author}{" "}
+                    <Moment fromNow>{dateToFormat}</Moment>
+                  </p>
+                  <Link
+                    style={{ color: "black", textTransform: "capitalize" }}
+                    to={`/articles/${article.topic}`}
+                  >
+                    /{article.topic}
+                  </Link>
+                </div>
+                <div className="votes-comments">
+                  <Typography className={classes.pos} color="textSecondary">
+                    <p>
+                      {article.comment_count} <FontAwesomeIcon icon="comment" />
+                    </p>
+                  </Typography>
+                  {loggedIn ? (
+                    <Voter
+                      type="article"
+                      loggedIn={loggedIn}
+                      voteUpdater={props.voteUpdater}
+                      articleId={article.article_id}
+                      votes={article.votes}
+                    ></Voter>
+                  ) : (
+                    <>
+                      <p>{article.votes} votes</p>
+                      <p>Log in to vote</p>
+                    </>
+                  )}
+                </div>
+              </div>
+            </Typography>
+            <Typography variant="h6" component="h4">
+              {article.title}
+            </Typography>
 
-              <Voter
-                articleId={article.article_id}
-                votes={article.votes}
-              ></Voter>
-            </div>
-          </Typography>
-          <Typography variant="h6" component="h4">
-            {article.title}
-          </Typography>
+            <Typography className={classes.body} color="textPrimary">
+              <p>{article.body}</p>
+            </Typography>
 
-          <Typography className={classes.body} color="textPrimary">
-            <p>{article.body}</p>
-          </Typography>
-
-          <Typography variant="body2" component="p"></Typography>
-        </CardContent>
-      </Card>
+            <Typography variant="body2" component="p"></Typography>
+          </CardContent>
+        </Card>
+      </div>
       <Comments
         loggedIn={loggedIn}
         loggedInUser={loggedInUser}
         id={article.article_id}
       ></Comments>
-    </div>
+    </>
   );
 };
 

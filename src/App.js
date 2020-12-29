@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Router } from "@reach/router";
 import "./App.css";
 import Header from "./Components/Header";
-import Nav from "./Components/Nav";
+import AddArticle from "./Components/AddArticle";
 import Articles from "./Components/Articles";
 import SingleArticle from "./Components/SingleArticle";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -17,15 +17,13 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "./Components/Footer";
 import Login from "./Components/Login";
-
-import AddArticle from "./Components/AddArticle";
 import Register from "./Components/Register";
 import ErrorMessage from "./Components/ErrorMessage";
 
 library.add(fab, faThumbsUp, faThumbsDown, faComment, faTrashAlt, faNewspaper);
 
 class App extends Component {
-  state = { loggedInUser: "", loggedIn: false };
+  state = { loggedInUser: "happyamy2016", loggedIn: true };
 
   login = (username) => {
     this.setState({ loggedInUser: username, loggedIn: true });
@@ -38,27 +36,35 @@ class App extends Component {
     const { loggedInUser, loggedIn } = this.state;
 
     return (
-      <div className="main-border">
+      <div className="app">
         <div className="main-content">
-          <Header></Header>
           <banner className="banner">
+            <Header></Header>
             <Login
               loggedIn={this.state.loggedIn}
               logout={this.logout}
               login={this.login}
             ></Login>
-            <Nav loggedIn={this.state.loggedIn}></Nav>
           </banner>
+
           <Router primary={false}>
-            <Articles loggedInUser={loggedInUser} path="/"></Articles>
+            <Articles
+              loggedIn={loggedIn}
+              loggedInUser={loggedInUser}
+              path="/"
+            ></Articles>
             <Articles path="/articles/:topic"></Articles>
             <SingleArticle
               loggedIn={loggedIn}
               loggedInUser={loggedInUser}
               path="/articles/id/:id"
             ></SingleArticle>
-            <AddArticle path="add-article"></AddArticle>
             <Register path="/register"></Register>
+            <AddArticle
+              loggedInUser={loggedInUser}
+              loggedIn={loggedIn}
+              path="/add-article"
+            ></AddArticle>
             {/* <ErrorMessage
               errorMessage={
                 "Sorry, that page doesn't exist - have a look through the topics above, or head home through the NC NEWS link."

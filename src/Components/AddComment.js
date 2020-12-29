@@ -12,10 +12,11 @@ class AddComment extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { loggedInUser, loggedIn } = this.props;
+
+    const { loggedInUser, commentAdder } = this.props;
     const article_id = this.props.articleId;
     postComment(this.state, article_id).then((newComment) => {
-      this.props.commentAdder(newComment);
+      commentAdder(newComment);
       this.setState({ username: loggedInUser, body: "" });
     });
   };
@@ -30,42 +31,52 @@ class AddComment extends Component {
     return (
       <div className="comment-form">
         <h5>Got something to say...?</h5>
+        <div className="form-container">
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              <div>
+                <textarea
+                  rows="8"
+                  cols="50"
+                  style={{
+                    height: "100px",
+                  }}
+                  required
+                  // className="comment-body"
+                  type="text"
+                  onChange={this.handleChange}
+                  id="body"
+                  value={this.state.body}
+                  placeholder="Comment..."
+                ></textarea>
+              </div>
+            </label>
+            <div>
+              <label>
+                <input
+                  required
+                  type="text"
+                  onChange={this.handleChange}
+                  id="username"
+                  value={loggedInUser}
+                  placeholder="Username"
+                ></input>
+              </label>
+            </div>
 
-        <form className="comment-form" onSubmit={this.handleSubmit}>
-          <label>
-            <textarea
-              style={{ height: "200px", width: "300px" }}
-              required
-              className="comment-body"
-              type="text"
-              onChange={this.handleChange}
-              id="body"
-              value={this.state.body}
-              placeholder="Comment..."
-            ></textarea>
-          </label>
-          <label>
-            <input
-              required
-              type="text"
-              onChange={this.handleChange}
-              id="username"
-              value={loggedInUser}
-              placeholder="Username"
-            ></input>
-          </label>
-          {loggedIn ? (
-            <label>
-              <Button type="submit">Submit</Button>
-            </label>
-          ) : (
-            <label>
-              <Button disabled={true} type="submit">
-                Looks like you need to log in!
-              </Button>
-            </label>
-          )}
-        </form>
+            {loggedIn ? (
+              <label>
+                <Button type="submit">Submit</Button>
+              </label>
+            ) : (
+              <label>
+                <Button disabled={true} type="submit">
+                  Looks like you need to log in!
+                </Button>
+              </label>
+            )}
+          </form>
+        </div>
       </div>
     );
   }

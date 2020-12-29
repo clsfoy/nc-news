@@ -25,7 +25,10 @@ class Comments extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const hasNewComment = prevState.hasNewComment !== this.state.hasNewComment;
+    console.log("updated");
+    const hasNewComment =
+      prevState.comments.length !== this.state.comments.length;
+    console.log(hasNewComment);
     const diffSort = prevState.sort_by !== this.state.sort_by;
     const diffOrder = prevState.sort_order !== this.state.sort_order;
     if (hasNewComment) {
@@ -50,9 +53,10 @@ class Comments extends Component {
   }
 
   commentAdder = (newComment) => {
+    console.log("comment adder");
     this.setState((currState) => {
       return {
-        comments: [...currState.comments, newComment],
+        comments: [newComment, ...currState.comments],
         hasNewComment: true,
       };
     });
@@ -163,6 +167,7 @@ class Comments extends Component {
                 id={comment.comment_id}
                 voteUpdater={this.voteUpdater}
                 commentDeleter={this.commentDeleter}
+                loggedIn={loggedIn}
                 loggedInUser={loggedInUser}
                 key={comment.comment_id}
                 article_id={this.props.id}

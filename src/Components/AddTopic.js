@@ -15,6 +15,7 @@ class AddTopic extends Component {
     postTopic(this.state).then((newTopic) => {
       getTopics().then((topics) => {
         this.props.topicAdder(newTopic);
+        this.setState({ slug: "", description: "" });
       });
     });
   };

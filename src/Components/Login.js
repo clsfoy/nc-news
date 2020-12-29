@@ -4,9 +4,9 @@ import Button from "@material-ui/core/Button";
 class Login extends Component {
   state = {
     users: [],
-    userName: "",
+    userName: "happyamy2016",
     placeholder: "Enter username...",
-    isValid: false,
+    isValid: true,
   };
 
   componentDidMount() {
@@ -44,7 +44,6 @@ class Login extends Component {
   };
   render() {
     const { loggedIn } = this.props;
-
     const { placeholder } = this.state;
     const { login } = this.props;
     const { logout } = this.props;
@@ -52,7 +51,7 @@ class Login extends Component {
       <div className="login">
         {loggedIn ? (
           <div className="login-success">
-            <h4>Welcome {this.state.userName}</h4>
+            <p>Welcome {this.state.userName}</p>
             <Button
               style={{ background: "white" }}
               onClick={() => {

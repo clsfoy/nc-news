@@ -37,7 +37,7 @@ class SingleArticle extends Component {
       );
     } else {
       return (
-        <div>
+        <div className="articles">
           <FullArticleCard
             loggedIn={loggedIn}
             loggedInUser={loggedInUser}

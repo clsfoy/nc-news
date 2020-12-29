@@ -5,7 +5,6 @@ const ncNewsApi = axios.create({
 });
 
 export const getTopics = () => {
-  console.log("inside");
   return ncNewsApi.get("/topics").then(({ data }) => {
     return data;
   });
@@ -20,9 +19,10 @@ export const getArticles = (topic, sort_by, order) => {
     });
 };
 
-export const postArticle = (article) => {
+export const postArticle = (title, body, topic, author) => {
+  console.log(title, body, topic, author);
   return ncNewsApi
-    .post("/articles", article)
+    .post("/articles", { title, body, topic, author })
     .then((res) => {
       return res.data.newArticle;
     })
@@ -50,6 +50,7 @@ export const getCommentsByArticleId = (id, sort_by, order) => {
 };
 
 export const postComment = (comment, id) => {
+  console.log("in api");
   return ncNewsApi
     .post(`/articles/${id}/comments`, comment)
     .then(({ data }) => {
@@ -58,21 +59,24 @@ export const postComment = (comment, id) => {
 };
 
 export const deleteComment = (comment_id) => {
-  return ncNewsApi.delete(`/comments/${comment_id}`).then((res) => {
-    console.log(res);
-  });
+  return ncNewsApi.delete(`/comments/${comment_id}`).then((res) => {});
 };
 
-export const upVoteArticle = (articleId, val) => {
-  if (val === "up") {
+export const upVoteArticle = (articleId, val, type, commentId) => {
+  if (type === "article") {
     return ncNewsApi
-      .patch(`/articles/${articleId}`, { inc_votes: 1 })
-      .then((res) => {});
+      .patch(`/articles/${articleId}`, { inc_votes: val })
+      .then((data) => {
+        return data.data.updatedArticle;
+      });
   }
-  if (val === "down") {
+
+  if (type === "comment") {
     return ncNewsApi
-      .patch(`/articles/${articleId}`, { inc_votes: -1 })
-      .then((res) => {});
+      .patch(`/comments/${commentId}`, { inc_votes: val })
+      .then((data) => {
+        return data.data.updatedComment;
+      });
   }
 };
 
@@ -83,15 +87,12 @@ export const getAllUsers = () => {
 };
 
 export const postTopic = (topic) => {
-  console.log(topic);
   return ncNewsApi.post("/topics", topic).then((response) => {
     return response.data.createdTopic;
   });
 };
 
 export const upVoteComment = (comment_id, val) => {
-  console.log(comment_id);
-
   if (val === "up") {
     return ncNewsApi.patch(`/comments/${comment_id}`).then((res) => {
       return res.data;

@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link } from "@reach/router";
 import ScrollUpButton from "react-scroll-up-button";
+import Nav from "./Nav";
 
 class Articles extends Component {
   state = {
@@ -25,19 +26,10 @@ class Articles extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevState.articles !== this.state.articles, "updated");
     const topic = this.props.topic;
     const diffProps = prevProps.topic !== this.props.topic;
     const diffSort = prevState.sort_by !== this.state.sort_by;
     const diffOrder = prevState.sort_order !== this.state.sort_order;
-
-    // if (prevState.articles !== this.state.articles) {
-    //   getArticles(topic, this.state.sort_by, this.state.sort_order).then(
-    //     (articles) => {
-    //       this.setState({ articles, isLoading: false });
-    //     }
-    //   );
-    // }
 
     if (diffProps) {
       getArticles(topic).then((articles) => {
@@ -64,7 +56,6 @@ class Articles extends Component {
   };
 
   articleDeleter = () => {
-    console.log("deleting...");
     const topic = this.props.topic;
 
     getArticles(topic, this.state.sort_by, this.state.sort_order).then(
@@ -79,78 +70,30 @@ class Articles extends Component {
     this.setState({ sort_order: order });
   };
 
+  voteUpdater = () => {
+    const topic = this.props.topic;
+    getArticles(topic, this.state.sort_by, this.state.sort_order).then(
+      (articles) => {
+        this.setState({ articles, isLoading: false });
+      }
+    );
+  };
+
   render() {
+    const { loggedIn } = this.props;
     if (this.state.isLoading) {
       return <Loading />;
     } else {
       return (
         <div className="articles-container">
           <div className="articles-header">
-            <h3 className="topic-text">{this.props.topic || "All Articles"}</h3>
-            <h3>
-              🗞️
+            {/* <h4 className="topic-text">
+              {this.props.topic || "All Articles"} 🗞️
               {this.state.articles.length}
-            </h3>
+            </h4> */}
+
             <div className="sort">
-              <Dropdown>
-                <Dropdown.Toggle
-                  style={{
-                    margin: "1%",
-                    color: "white",
-                    background: "#eb5c44",
-                    border: "none",
-                  }}
-                >
-                  Sort
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item>
-                    <Button
-                      style={{
-                        color: "black",
-                      }}
-                      className="sort-button"
-                      variant="outlined"
-                      onClick={() => this.sortArticles("author")}
-                    >
-                      Author
-                    </Button>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Button
-                      style={{
-                        color: "black",
-                      }}
-                      variant="outlined"
-                      onClick={() => this.sortArticles("created_at")}
-                    >
-                      Date
-                    </Button>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Button
-                      style={{
-                        color: "black",
-                      }}
-                      variant="outlined"
-                      onClick={() => this.sortArticles("comment_count")}
-                    >
-                      Comments
-                    </Button>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Button
-                      style={{
-                        color: "black",
-                      }}
-                      variant="outlined"
-                      onClick={() => this.sortArticles("votes")}
-                    >
-                      Votes
-                    </Button>
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              <p>Sort Articles</p>
               <select
                 className="select"
                 onChange={this.handleChange}
@@ -160,29 +103,76 @@ class Articles extends Component {
                 <option value="asc">ASC</option>
                 <option value="desc">DESC</option>
               </select>
-              <Link to="/add-article">
-                <Button style={{ backgroundColor: "#eb5c44", color: "white" }}>
-                  New Post
-                </Button>
-              </Link>
+              <Button
+                style={{
+                  color: "black",
+                }}
+                className="sort-button"
+                // variant="outlined"
+                onClick={() => this.sortArticles("author")}
+              >
+                Author
+              </Button>
+              {/* </Dropdown.Item>
+                  <Dropdown.Item> */}
+              <Button
+                style={{
+                  color: "black",
+                }}
+                onClick={() => this.sortArticles("created_at")}
+              >
+                Date
+              </Button>
+              {/* </Dropdown.Item>
+                  <Dropdown.Item> */}
+              <Button
+                style={{
+                  color: "black",
+                }}
+                onClick={() => this.sortArticles("comment_count")}
+              >
+                Comments
+              </Button>
+              {/* </Dropdown.Item>
+                  <Dropdown.Item> */}
+              <Button
+                style={{
+                  color: "black",
+                  textAlign: "right",
+                }}
+                onClick={() => this.sortArticles("votes")}
+              >
+                Votes
+              </Button>
+              {/* </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown> */}
             </div>
           </div>
-          {this.state.articles.length === 0 ? (
-            <h4 style={{ color: "white" }}>
-              Nothing to see! Add a new post above to get started...
-            </h4>
-          ) : (
-            this.state.articles.map((article) => {
-              return (
-                <ArticleCard
-                  articleDeleter={this.articleDeleter}
-                  loggedInUser={this.props.loggedInUser}
-                  key={article.article_id}
-                  article={article}
-                ></ArticleCard>
-              );
-            })
-          )}
+          <div className="articles-wrapper">
+            <Nav loggedIn={this.state.loggedIn}></Nav>
+            <div className="cards">
+              {this.state.articles.length === 0 ? (
+                <h4 style={{ color: "black" }}>
+                  Nothing to see! Add a new post above to get started...
+                </h4>
+              ) : (
+                this.state.articles.map((article) => {
+                  return (
+                    <ArticleCard
+                      loggedIn={loggedIn}
+                      voteUpdater={this.voteUpdater}
+                      articleDeleter={this.articleDeleter}
+                      loggedInUser={this.props.loggedInUser}
+                      key={article.article_id}
+                      article={article}
+                    ></ArticleCard>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
           <ScrollUpButton />
         </div>
       );

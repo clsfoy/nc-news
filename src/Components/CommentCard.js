@@ -6,9 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Moment from "react-moment";
 import "moment-timezone";
 import { deleteComment } from "../api";
-import CommentVoter from "./CommentVoter";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Voter from "./Voter";
 
 const useStyles = makeStyles({
   root: {
@@ -36,7 +35,7 @@ const CommentCard = (props) => {
   const comment = props.comment;
   const commentDeleter = props.commentDeleter;
   const dateToFormat = comment.created_at;
-  const { loggedInUser } = props;
+  const { loggedInUser, loggedIn } = props;
 
   const handleClick = () => {
     if (window.confirm("Are you sure you wish to delete this comment?"))
@@ -55,22 +54,31 @@ const CommentCard = (props) => {
             gutterBottom
           >
             <div className="card-header">
-              <p>
-                Written by {comment.author}{" "}
-                <Moment fromNow>{dateToFormat}</Moment>
-              </p>
-              {loggedInUser === comment.author ? (
-                <button class="btn" onClick={handleClick}>
-                  <FontAwesomeIcon className="delete-btn" icon="trash-alt" />
-                </button>
-              ) : (
-                <p></p>
-              )}
-              <CommentVoter
-                voteUpdater={props.voteUpdater}
-                comment_id={comment.comment_id}
-                votes={comment.votes}
-              ></CommentVoter>
+              <div className="author">
+                <p>
+                  Written by {comment.author}{" "}
+                  <Moment fromNow>{dateToFormat}</Moment>
+                </p>
+                {loggedInUser === comment.author ? (
+                  <button class="btn" onClick={handleClick}>
+                    <FontAwesomeIcon className="delete-btn" icon="trash-alt" />
+                  </button>
+                ) : (
+                  <p></p>
+                )}
+                {loggedIn ? (
+                  <Voter
+                    voteUpdater={props.voteUpdater}
+                    comment_id={comment.comment_id}
+                    votes={comment.votes}
+                    type="comment"
+                  ></Voter>
+                ) : (
+                  <>
+                    <p>{comment.votes} votes</p> <p>Please log in to vote</p>{" "}
+                  </>
+                )}
+              </div>
             </div>
           </Typography>
           <p>{comment.body}</p>

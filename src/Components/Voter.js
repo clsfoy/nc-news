@@ -2,57 +2,70 @@ import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { upVoteArticle } from "../api";
 class Voter extends Component {
-  state = { voteChange: 0, hasVoted: false };
+  state = { voteChange: 0, votes: +this.props.votes, hasVoted: false };
 
   handleClick = (val) => {
-    const { articleId } = this.props;
+    const { articleId, type, comment_id } = this.props;
+    const vote = +val;
 
-    if (val === "up") {
-      upVoteArticle(articleId, val);
-      this.setState({ voteChange: 1, hasVoted: true });
-    }
-
-    if (val === "down") {
-      upVoteArticle(articleId, val);
-      this.setState({ voteChange: -1, hasVoted: true });
-    }
+    upVoteArticle(articleId, vote, type, comment_id).then((data) => {
+      const votes = data[0].votes;
+      this.setState((currentState) => {
+        const newState = {
+          votes: votes,
+          voteChange: vote,
+        };
+        return newState;
+      });
+    });
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log("updated");
-    console.log(prevState, this.state);
-    if (prevState !== this.state) {
-    }
-  }
-
   render() {
-    const { votes } = this.props;
-    const { voteChange } = this.state;
+    const { votes, voteChange } = this.state;
+    const upVoted = voteChange === 1;
+    const downVoted = voteChange === -1;
+
     return (
       <div className="voter">
-        <h4>
-          {votes + voteChange}
+        <p>{votes} votes</p>
+        {upVoted ? (
           <button
-            value="up"
-            onClick={() => {
-              this.handleClick("up");
-            }}
-            disabled={false}
             class="btn"
+            disabled={true}
+            value="1"
+            onClick={() => this.handleClick("1")}
           >
             <FontAwesomeIcon icon="thumbs-up" />
           </button>
+        ) : (
           <button
-            value="up"
-            onClick={() => {
-              this.handleClick("down");
-            }}
-            disabled={false}
             class="btn"
+            disabled={false}
+            value="1"
+            onClick={() => this.handleClick("1")}
+          >
+            <FontAwesomeIcon icon="thumbs-up" />
+          </button>
+        )}
+        {downVoted ? (
+          <button
+            class="btn"
+            disabled={true}
+            value="-1"
+            onClick={() => this.handleClick("-1")}
           >
             <FontAwesomeIcon icon="thumbs-down" />
           </button>
-        </h4>
+        ) : (
+          <button
+            class="btn"
+            disabled={false}
+            value="-1"
+            onClick={() => this.handleClick("-1")}
+          >
+            <FontAwesomeIcon icon="thumbs-down" />
+          </button>
+        )}
       </div>
     );
   }
